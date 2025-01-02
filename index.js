@@ -3,11 +3,13 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/userRouter.js";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
-app.use(bodyParser.json());
 
+app.use(cors());
+app.use(bodyParser.json());
 
 // Mongodb Connection
 
@@ -22,5 +24,5 @@ connection.once("open", () => {
 
 app.use("/api/users", userRouter);
 app.listen(5000, () => {
-    console.log("Server is running on port 5000");
-  });
+  console.log("Server is running on port 5000");
+});

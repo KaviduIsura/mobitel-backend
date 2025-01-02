@@ -22,28 +22,33 @@ export function createUser(req, res) {
         message: "Error User not created",
       });
     });
-  }
-
+}
 
 export function loginUser(req, res) {
   const { userName, password } = req.body;
 
   // Validate input
   if (!userName || !password) {
-    return res.status(400).json({ message: "Username and password are required" });
+    return res
+      .status(400)
+      .json({ message: "Username and password are required" });
   }
 
   // Find the user by username
   User.findOne({ userName })
     .then((user) => {
       if (!user) {
-        return res.status(400).json({ message: "Invalid username or password" });
+        return res
+          .status(400)
+          .json({ message: "Invalid username or password" });
       }
 
       // Compare password
       const isPasswordMatch = bcrypt.compareSync(password, user.password);
       if (!isPasswordMatch) {
-        return res.status(400).json({ message: "Invalid username or password" });
+        return res
+          .status(400)
+          .json({ message: "Invalid username or password" });
       }
 
       // Login successful
@@ -60,6 +65,19 @@ export function loginUser(req, res) {
       res.status(500).json({
         message: "Server error",
         error: error.message,
+      });
+    });
+}
+export function getUsers(req, res) {
+  User.find({})
+    .then((products) => {
+      res.json({
+        list: products,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: error,
       });
     });
 }
